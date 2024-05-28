@@ -10,6 +10,67 @@ import 'swiper/css';
 import 'swiper/css/autoplay';
 import 'swiper/css/navigation';
 import { supabase } from "../compoments/SupaBase";
+import Slider from 'react-slick';
+import '../ReviewSlider.css';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+
+const ReviewsSlider = () => {
+  const [reviews, setReviews] = useState([]);
+
+  useEffect(() => {
+    fetchReviews();
+  }, []);
+
+  const fetchReviews = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('reviews')
+        .select('content, register, title, photo');
+
+      if (error) {
+        throw error;
+      }
+
+      setReviews(data);
+    } catch (error) {
+      console.error('Error fetching reviews:', error.message);
+    }
+  };
+
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 3000,
+  };
+
+  return (
+    <div className="slider-container">
+      <Slider {...settings}>
+        {reviews.map((review, index) => (
+          <div key={index} className="review-card">
+            <div className="reviewer-info">
+              <img
+                src={review.photo}
+                alt={review.register}
+                className="reviewer-photo"
+              />
+              <div className="reviewer-details">
+                <h3 className="reviewer-name">{review.register}</h3>
+                <p className="reviewer-title">{review.title}</p>
+              </div>
+            </div>
+            <p className="review-text">{review.content}</p>
+          </div>
+        ))}
+      </Slider>
+    </div>
+  );
+};
 
 const PlansList = () => {
   const [plans, setPlans] = useState([]);
@@ -22,7 +83,7 @@ const PlansList = () => {
     try {
       const { data, error } = await supabase
         .from('plans')
-        .select('ülke, açıklama, fiyat, gün');
+        .select('ülke, açıklama, fiyat, gün, img');
 
       if (error) {
         throw error;
@@ -36,10 +97,11 @@ const PlansList = () => {
 
   return (
     <div>
-      <div>
+      <div className="home-plan">
         {plans.map((plan, index) => (
-          <div key={index} style={{ border: '1px solid #ccc', marginBottom: '10px', padding: '10px' }}>
-            <h2>Ülke: {plan.ülke}</h2>
+          <div className="plan-card" key={index}>
+            <img src={plan.img} alt={plan.açıklama} />
+            <h2> {plan.ülke}</h2>
             <p>Açıklama: {plan.açıklama}</p>
             <p>Fiyat: {plan.fiyat} TL</p>
             <p>Gün Sayısı: {plan.gün} gün</p>
@@ -62,7 +124,7 @@ const RecentActivities = () => {
     try {
       const { data: blog, error } = await supabase
         .from('blog')
-        .select('id, title, created_at, content');
+        .select('id, title, created_at, first_sentence');
 
       if (error) {
         throw error;
@@ -75,16 +137,17 @@ const RecentActivities = () => {
   };
 
   return (
-    <div>
+    <div className="act-box">
       {blog.map(b => (
-        <div key={b.id}>
-          <h2>{b.title}</h2>
+        <div className="recent-act" key={b.id}> 
           <p>{b.created_at}</p>
-          <p>{b.content}</p>
+          <h2>{b.title}</h2>
+          <p>{b.first_sentence}</p>
           <Link to={`/blog/${b.id}`}>
             <button>Oku</button>
           </Link>
         </div>
+        
       ))}
     </div>
   );
@@ -132,9 +195,7 @@ export function DealCard()
           key={deal.id}>
           <img src={deal.img} alt={deal.country} />
           <div className="deal-content">
-            <h6>{deal.country}</h6>
             <h4>{deal.title}</h4>
-            <p>%30 indirimle hemen rezervasyon yap!</p>
             <p className="price">1000 TL ' den başlayan fiyatlarla</p>
           </div>
 
@@ -301,9 +362,9 @@ export default function Home()
       
           <p>Hayal Ettiğinizden Fazlası için Hazırlandı! Uzman Ekibimizle, Rüya Tatiliniz İçin Her Detayı Düşündük. Sadece Keyfinize Bakın, Gerisini Bize Bırakın!</p>
         </div>
-        <div className="plan-section">
+        
          <PlansList />
-        </div>
+        
       </div>
     
       <div className="topdeals">
@@ -355,6 +416,7 @@ export default function Home()
         <h2>En İyi Tur İncelemeleri</h2>
       
         <p>Keşfedin ve Seyahatlerinizi En İyi Şekilde Planlayın.</p>
+       <ReviewsSlider />
            
       </div>
       <div className="recent-activities">
@@ -363,9 +425,9 @@ export default function Home()
           <p>Yolculuklarınızı Renklendirecek En Güncel ve Etkileyici Deneyimler</p>
         </span>
         
-        <div className="act-box">
+     
        <RecentActivities />
-        </div>
+     
 
       </div>
       
