@@ -6,14 +6,19 @@ import Tour from './pages/Tour'
 import Home from './pages/Home'
 import Cars from './pages/Cars'
 import Hotel from './pages/Hotel'
-import Cruise from './pages/Cruise'
-// import Gallery from './pages/Gallery'
+import HotelList from './pages/HotelList'
+import FlightList from './pages/FlightList'
+import CarList from './pages/CarList'
+import HotelDetail from './pages/HotelDetail'
+import FlightDetail from './pages/FlightDetail'
+import CarDetail from './pages/CarDetail'
+ import Gallery from './pages/Gallery'
 import Flights from './pages/Flights'
 import Booking from './compoments/Booking'
-import Login from './compoments/Login'
-import Contact from './compoments/Contact'
+// import Login from './compoments/Login'
+// import Contact from './compoments/Contact'
 import AboutUs from './compoments/AboutUs'
-import Register from './compoments/Register'
+// import Register from './compoments/Register'
 import Base from './layouts/Base'
 import NotFound from './compoments/404'
 
@@ -55,39 +60,70 @@ const router = createBrowserRouter([
       
         },
         {
-          path:"/cruise",
-          element: <Cruise />
-      
-        },
-        {
           path:"/aboutus",
           element: <AboutUs />
       
         }
         ,
+        // {
+        //   path:"/contact",
+        //   element: <Contact />
+      
+        // }
+        // ,
         {
-          path:"/contact",
-          element: <Contact />
+          path:"/hotel-List",
+          element: <HotelList />
       
         }
         ,
         {
-          path:"/login",
-          element: <Login />
+          path:"/flight-List",
+          element: <FlightList />
       
         }
         ,
         {
-          path:"/register",
-          element: <Register />
+          path:"/car-List",
+          element: <CarList />
       
         }
         ,
         // {
-        //   path:"/gallery",
-        //   element: <Gallery />
+        //   path:"/login",
+        //   element: <Login />
       
-        // } ,
+        // }
+        // ,
+        {
+          path:"/hotel/:id",
+          element: <HotelDetail />
+      
+        }
+        ,
+        {
+          path:"/flight/:id",
+          element: <FlightDetail />
+      
+        }
+        ,
+        {
+          path:"/car/:id",
+          element: <CarDetail />
+      
+        }
+        ,
+        // {
+        //   path:"/register",
+        //   element: <Register />
+      
+        // }
+        // ,
+        {
+          path:"/gallery",
+          element: <Gallery />
+      
+        } ,
         {
           path:"/flights",
           element: <Flights />

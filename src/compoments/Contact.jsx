@@ -1,99 +1,72 @@
-import React, { useState } from 'react';
-import { supabase } from "../compoments/SupaBase";
-const Contact = () => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
-  const [message, setMessage] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
+// import { useEffect, useRef, useState } from "react";
+// import { Link } from 'react-router-dom';
+// import { supabase } from "../compoments/SupaBase";
+// import "../App.css"
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
 
-    try {
-      const { data, error } = await supabase.from('contact_messages').insert({
-        name,
-        email,
-        phone,
-        message,
-      });
 
-      if (error) {
-        setErrorMessage('Mesajınız gönderilirken bir hata oluştu.');
-        console.error('Supabase error:', error);
-      } else {
-        setName('');
-        setEmail('');
-        setPhone('');
-        setMessage('');
-        setErrorMessage('');
-        alert('Mesajınız başarıyla gönderildi!');
-      }
-    } catch (err) {
-      console.error('Supabase error:', err);
-      setErrorMessage('Mesajınız gönderilirken bir hata oluştu.');
-    }
-}
-    return(
-    <section className="contact-main pad-top-0 contact1 bg-white">
-    <div className="map mar-bottom-60">
-      <div id="map" style={{ height: 535, width: '100%' }}></div>
-    
-    </div>
-    <div className="container">
-      <div className="contact-support mar-bottom-30">
-        <div className="row">
-          <div className="col-md-4 col-sm-12 col-xs-12">
-            <div className="support-item">
-              <h3>Costumer Support</h3>
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec hendrerit facilisis nisi.</p>
-            </div>
-          </div>
-          <div className="col-md-4 col-sm-6 col-xs-12">
-            <div className="support-item">
-              <h3>Technical Support</h3>
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec hendrerit facilisis nisi.</p>
-            </div>
-          </div>
-          <div className="col-md-4 col-sm-6 col-xs-12">
-            <div className="support-item">
-              <h3>Booking Queries</h3>
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec hendrerit facilisis nisi.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="contact-info">
-        <div className="row">
-          <div className="col-md-6 col-sm-6 col-xs-12">
-            <div className="contact-info">
-              <div className="info-item mar-bottom-30">
-                <div className="info-icon">
-                  <i className="fa fa-map-marker"></i>
-                </div>
-                <div className="info-content">
-                  <p>445 Mount Eden Road, Mt Eden</p>
-                  <p>Basundhara Chakrapath</p>
-                </div>
-              </div>
-              <div className="info-item info-item-or mar-bottom-30">
-                <div className="info-icon">
-                  <i className="fa fa-phone"></i>
-                </div>
-                <div className="info-content">
-                  <p>977-444-666-888</p>
-                  <p>977-444-222-000</p>
-                </div>
-              </div>
-              </div>
-              </div>
+// export default function Contact()
+// {
 
-        </div>
-        </div>
-        </div>
-        </section>
 
-              );
-  
-            }
-            export default Contact;
+//   async function handleSubmit(e) {
+//     e.preventDefault();
+// }
+
+//   return(
+// <>
+// <span className="theme">
+//     <h2>iLETİŞİM</h2>
+//   </span>
+
+//     <div className="contact-container">
+      
+//   <div className="contact-boxes">
+//     <div className="contact-box">
+//       <h2>Müşteri Desteği</h2>
+//       <p>Seyahatinizi en iyi şekilde planlamanız için her zaman yanınızdayız.</p>
+//     </div>
+//     <div className="contact-box">
+//     <h2>Teknik Destek</h2>
+//       <p>
+// Herhangi bir teknik sorunla karşılaştığınızda, size yardımcı olmak için buradayız. </p>
+//     </div>
+//     <div className="contact-box">
+//     <h2>Rezervasyon</h2>
+//       <p>En uygun fiyatlarla ve kolay adımlarla seyahatinizi rezerve edin.</p>
+//     </div>
+//   </div>
+//   <div className="content-form">
+//     <div className="sec-content">
+//         <div className="cont">
+//           <img src="/icons/pin.png" alt="" />
+//           <p>Kütahya Dumlupınar Üniversitesi</p>
+//         </div>
+//         <div className="cont">
+//           <img src="/icons/call.png" alt="" />
+//           <p>542-575-9482</p>
+//         </div>
+//         <div className="cont">
+//           <img src="/icons/mail.png" alt="" />
+//           <p>fatmanur.hacicaferoglu@gmail.com</p>
+//         </div>
+//         <div className="cont">
+//           <img src="/icons/earth-globe.png" alt="" />
+//           <p>rotamizkutahya.com.tr</p>
+//         </div>
+//     </div>
+//     <div className="cont-form">
+//     <form onSubmit={handleSubmit} autoComplete="off">
+//                 <input required type="text" placeholder="Ad" name="name" />
+//                 <input required type="text" placeholder="Soyad" name="surname" />
+//                 <input required type="email" placeholder="E-Posta Adresi" name="email" />
+//                 <input required type="tel" placeholder="Şifre" name="phone" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}"/>
+//                 <textarea name="requirements" id="" cols="30" rows="10"></textarea>
+//                 <button>Next</button>
+//             </form>
+//     </div>
+//   </div>
+//     </div>
+//     </>
+//   )
+// }

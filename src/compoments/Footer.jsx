@@ -23,10 +23,10 @@ const Footer = () => {
       <p>Konum: Kütahya Dumlupınar Üniversitesi</p>
     </span>
     <div className="social-media">
-      <Link to=""><img src="" alt="facebook" /></Link>
-      <Link to=""><img src="" alt="twitter" /></Link>
-      <Link to=""><img src="" alt="instagram" /></Link>
-      <Link to=""><img src="" alt="linkedn" /></Link>
+      <Link to="/"><img src="/icons/facebook-logo.png" alt="facebook" /></Link>
+      <Link to="/"><img src="/icons/twitter.png" alt="twitter" /></Link>
+      <Link to="/"><img src="/icons/instagram.png" alt="instagram" /></Link>
+      <Link to="/"><img src="/icons/linkedin.png" alt="linkedn" /></Link>
     </div>
   </div>
   </div>
@@ -35,17 +35,17 @@ const Footer = () => {
     <h3>Company</h3>
     
     <div className="company-links">
-      <Link to="">Hakkımızda</Link>
-      <Link to="">S.S.S</Link>
-      <Link to="">Şartlar ve koşullar</Link>
+      <Link to="/about-us">Hakkımızda</Link>
+      <Link to="/faq">S.S.S</Link>
+      <Link to="/">Şartlar ve koşullar</Link>
     </div>
   </div>
   <div className="footer-support">
     <h3>Support</h3>
     
     <div className="support-links">
-      <Link to="">İletişim</Link>
-      <Link to="">Hakkımızda</Link>
+      <Link to="/contact">İletişim</Link>
+      <Link to="/about-us">Hakkımızda</Link>
      
     </div>
   </div>
@@ -63,10 +63,10 @@ const Footer = () => {
   <span className="bottom-link">
 
   
-  <Link to="">Anasayfa</Link>
-  <Link to="">Hakkımızda</Link>
-  <Link to="">S.S.S</Link>
-  <Link to="">Bize ulaş</Link>
+  <Link to="/">Anasayfa</Link>
+  <Link to="/about-us">Hakkımızda</Link>
+  <Link to="/faq">S.S.S</Link>
+  <Link to="/contact">Bize ulaş</Link>
   </span>
 </div>
 </>

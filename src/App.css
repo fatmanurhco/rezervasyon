@@ -479,6 +479,10 @@ body:has(input[name="hamburger-menu"]:checked) .mobile-menu {
 
 
 }
+.social-media a{background-color: #414040; 
+padding: 8px;
+border-radius: 3px;
+}
 .underline-footer{
   margin:5px 0;
   width: 50px;
@@ -567,9 +571,12 @@ body:has(input[name="hamburger-menu"]:checked) .mobile-menu {
     display: flex;
     gap: 15px;
     font-size: 20px;
-    color: var(--title-color);
+    
   }
-  .navbar a{text-decoration: none;}
+  .navbar a{text-decoration: none;
+    color: var(--title-color);
+  
+  }
   .header {
     justify-content: space-evenly;
     padding: 12px 16px;
@@ -701,7 +708,7 @@ body:has(input[name="hamburger-menu"]:checked) .mobile-menu {
 .calltobook{
   text-align: center;
   color: #fff;
-  margin-bottom: 280px;
+  margin-bottom: 320px;
 
   & h3{
     color: var(--button-color);
@@ -848,6 +855,111 @@ body:has(input[name="hamburger-menu"]:checked) .mobile-menu {
 .plan-card:hover {
   transform: scale(1.05);
 }
+/* FlightPlan.css */
+.flight-box{
+  display: grid;
+  grid-template-columns: repeat(3 ,1fr);
+  gap: 20px;
+  padding: 0;
+  list-style: none;
+}
+.flight-box img{
+ width: 400px;
+ border-radius: 15px;
+}
+.flight-box li{border: 0.2px solid #99929226;
+border-radius: 10px;
+padding: 25px;
+}
+.hotel-cards{display: flex;
+gap: 30px;
+gap: 70px;
+margin-bottom: 70px;
+& h2 {font-size: 25px}
+
+}
+.explore-rooms{margin-top: 100px;}
+.hotel-card{border: 0.2px solid #99929226;
+  border-radius: 15px;
+  
+}
+.hotel-buttons{display: flex;
+justify-content: center;
+align-items: center;
+gap: 10px;
+}
+.black{background-color: #190912;}
+.hotel-image img{ width: 400px;
+  border-radius: 15px;}
+  .services{display: flex;
+    margin-inline: 30px;
+    margin-bottom: 150px;
+    gap: 89px;
+    & p {
+      font-size: 15px !important;
+      
+    }
+  }
+  .services-image{display: flex;
+    gap: 15px;
+  & img {
+    width: 300px;
+    height: 330px;
+    border-radius: 10px;
+}
+
+  }
+  .services-span
+  {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: end;
+  }
+   .car-form{column-gap: 55px;}
+   .section-howitworks .innfoboxes {
+    display: flex;
+    gap:61px !important;
+    justify-content: center;
+    align-items: center;  
+    > .wcu-p {padding-inline: 60px!important;}
+   }
+   .car-slider {
+    width: 80%;
+    margin: 0 auto;
+  }
+  
+  .car-slider h2 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .car-card {
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    text-align: center;
+  }
+  
+  .car-card h3 {
+    margin: 0 0 10px;
+  }
+  
+  .car-card p {
+    margin: 5px 0;
+  }
+  .car-card img {
+    width: 270px;
+    border-radius: 10px;
+  }
+  .ban-car{text-align: center;
+  flex-direction: column;
+  }
+  .plan-photo{width: 400px;}
+  .plan-home{display: block;}
+  .contact-container{
+    margin-top: 500px;
+  }
 }
 
 

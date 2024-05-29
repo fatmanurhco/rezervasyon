@@ -7,19 +7,28 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation , Autoplay } from 'swiper/modules';
 import { flightimages, deals} from '../compoments/SliderImg';
 import 'swiper/css';
+import { supabase } from '../compoments/SupaBase';
 import 'swiper/css/autoplay';
 import 'swiper/css/navigation';
+import { useNavigate } from 'react-router-dom';
 
 export function Multi()
 
 {
     const[date, setDate]=useState()
+    const navigate = useNavigate();
+    const handleSubmit = (e) => {
+      e.preventDefault();
+  
+      navigate(`/flight-list`);
+    
+    };
     return(
         <>
          
 
       <div className="bookform flights ">
-            <form className="multi">
+            <form className="multi" onSubmit={handleSubmit}>
             <span>
             <label>Nereye</label>
               <select name="il" className="secim" >
@@ -68,11 +77,18 @@ export function Multi()
 export function Round()
 {
     const[date, setDate]=useState()
+    const navigate = useNavigate();
+    const handleSubmit = (e) => {
+      e.preventDefault();
+  
+      navigate(`/flight-list`);
+    
+    };
     return(
         <>
          
        <div className="bookform flights ">
-             <form className="multi">
+             <form className="multi" onSubmit={handleSubmit}>
               <span>
              <label>Nereden</label>
                <select name="il" className="secim" >
@@ -117,11 +133,18 @@ export function Round()
 export function One()
 {
     const[date, setDate]=useState()
+    const navigate = useNavigate();
+    const handleSubmit = (e) => {
+      e.preventDefault();
+  
+      navigate(`/flight-list`);
+    
+    };
     return(
         <>
         
       <div className="bookform flights one">
-            <form className="multi">
+            <form className="multi" onSubmit={handleSubmit}>
             <span>
             <label>Nereye</label>
               <select name="il" className="secim" >
@@ -330,6 +353,46 @@ export function MainSwiper() {
 
 
 
+const FlightPlan = () => {
+  const [flights, setFlights] = useState([]);
+
+  useEffect(() => {
+    const fetchFlights = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('flights')
+          .select('id, from, to, price, airline, photo');
+
+        if (error) {
+          throw error;
+        }
+
+        setFlights(data);
+      } catch (error) {
+        console.error('Error fetching flights:', error.message);
+      }
+    };
+
+    fetchFlights();
+  }, []);
+
+  return (
+    <div>
+      <ul  className="flight-box">
+        {flights.map((flight, index) => (
+          <li key={index}>
+          <Link to={`/flight/${flight.id}`}> <img src={flight.photo} alt={flight.to} /></Link> 
+            <p>Kalkış: {flight.from}</p>
+            <p>Varış: {flight.to}</p>
+            <p>Fiyat: {flight.price}</p>
+            <p>Havayolu: {flight.airline}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
 
 export default function Flights()
 {
@@ -350,6 +413,7 @@ export default function Flights()
       <div className="flight-deals">
           <div className="deal-info">
             <h2>Uçuş Paketleri</h2>
+            <FlightPlan />
           </div>
           <div className="flight-deal">
 
@@ -484,7 +548,7 @@ export default function Flights()
 
 
         <div className="recent-articles">
-          
+
         </div>
         </div>
 

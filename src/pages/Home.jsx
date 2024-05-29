@@ -1,6 +1,9 @@
-import "../App.css"
+
 import { useEffect, useRef, useState } from "react";
 import DataCity  from "../compoments/DataCity"
+import { useNavigate } from 'react-router-dom';
+import 'primereact/resources/themes/saga-blue/theme.css';  // Tema CSS dosyası
+import 'primereact/resources/primereact.min.css';          // PrimeReact CSS dosyası
 import { Calendar } from 'primereact/calendar';
 import { Link } from 'react-router-dom';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -14,6 +17,7 @@ import Slider from 'react-slick';
 import '../ReviewSlider.css';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+import "../App.css"
 
 const ReviewsSlider = () => {
   const [reviews, setReviews] = useState([]);
@@ -99,7 +103,7 @@ const PlansList = () => {
     <div>
       <div className="home-plan">
         {plans.map((plan, index) => (
-          <div className="plan-card" key={index}>
+          <div className="plan-card plan-home" key={index}>
             <img src={plan.img} alt={plan.açıklama} />
             <h2> {plan.ülke}</h2>
             <p>Açıklama: {plan.açıklama}</p>
@@ -143,8 +147,8 @@ const RecentActivities = () => {
           <p>{b.created_at}</p>
           <h2>{b.title}</h2>
           <p>{b.first_sentence}</p>
-          <Link to={`/blog/${b.id}`}>
-            <button>Oku</button>
+          <Link className="btn act" to={`/blog/${b.id}`}>
+           OKU
           </Link>
         </div>
         
@@ -246,7 +250,21 @@ export function MainSwiper() {
 
 export default function Home()
 {
-  const[date, setDate]=useState()
+  const [destination, setDestination] = useState('');
+  const [departureDate, setDepartureDate] = useState(null);
+  const [returnDate, setReturnDate] = useState(null);
+  const [adults, setAdults] = useState(1);
+  const [children, setChildren] = useState(0);
+
+  const navigate = useNavigate();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    navigate(`/hotel-list`);
+  
+  };
+
    
       
   return(
@@ -265,24 +283,36 @@ export default function Home()
         </span>
       <div className="bookform">
           <h3>Bir Yer Ara</h3>
-            <form>
+            <form onSubmit={handleSubmit}> 
               <span>
                 <label>Nereye Gitmek istiyorsunuz?</label>
-              <select name="il" className="secim book-dest" >
+              <select name="il" className="secim book-dest" value={destination}
+          onChange={(e) => setDestination(e.target.value)} >
                 {DataCity.dataCity.map((city) => (
                 <option key={city.plaka} value={city.plaka}>{city.il}</option>))}</select>
               </span>
               <span className="bookform-span">
-              <span  >
-                 <label>Gidiş Tarihi</label>
-              <Calendar className="calendar"  value={date} onChange={(e) => setDate(e.value)} placeholder="dd-mm-yy" />
-              </span>
-            <span>
-              <label>Dönüş Tarihi</label>
-              <Calendar className="calendar"  value={date} onChange={(e) => setDate(e.value)} placeholder="dd-mm-yy" />
-            </span>
+              <span>
+        <label>Gidiş Tarihi</label>
+        <Calendar
+          className="calendar"
+          value={departureDate}
+          onChange={(e) => setDepartureDate(e.value)}
+          placeholder="dd-mm-yy"
+        />
+      </span>
+      <span>
+        <label>Dönüş Tarihi</label>
+        <Calendar
+          className="calendar"
+          value={returnDate}
+          onChange={(e) => setReturnDate(e.value)}
+          placeholder="dd-mm-yy"
+        />
+      </span>
             <span><label>Yetişkin Sayısı</label>
-              <select name="adult" className="secim">
+              <select name="adult" className="secim" value={adults}
+          onChange={(e) => setAdults(e.target.value)}>
                 <option value="1">1</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
@@ -292,7 +322,8 @@ export default function Home()
               </span>
               <span>
             <label>Çocuk Sayısı</label>
-              <select name="children" className="secim">
+              <select name="children" className="secim"  value={children}
+          onChange={(e) => setChildren(e.target.value)}>
                 <option value="1">1</option>
                 <option value="2">2</option>
                 <option value="3">3</option>

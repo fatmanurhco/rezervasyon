@@ -79,9 +79,6 @@ return(
                             <Link to="/car">Araba</Link>
                         </li>
                         <li className='list-item'>
-                            <Link to="/cruise">Gemi</Link>
-                        </li>
-                        <li className='list-item'>
                             <Link to="/tour">Tur</Link>
                         </li>
                         <li className='list-item'>
@@ -92,9 +89,6 @@ return(
                         </li>
                         <li className='list-item'>
                             <Link to="/events">Etkinlik</Link>
-                        </li>
-                        <li className='list-item'>
-                            <Link to="/basket">Sepet</Link>
                         </li>
                         <li className='list-item'>
                             <Link to="/login">Üye ol</Link>

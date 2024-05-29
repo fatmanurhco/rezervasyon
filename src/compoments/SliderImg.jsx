@@ -177,6 +177,50 @@ export const images = [
     },
   ];
  
+  export const tourimages = [
+    { id: 1, 
+      url: '/destinations/kaş.jpg' ,
+      title:"Hayallerinizdeki Tatile Bir Adım Atın",
+      body:"Güvenli ve kolay bir şekilde rezervasyon yapın.",
+      buttons:[
+        { 
+            id:1,
+            label:"KEŞFET",
+            link:"/" },
+        { 
+            id:2,
+            label:"BİZE ULAŞ",
+            link:"/contactus" },
+      ]
+    },
+
+    { 
+    id: 2,
+     url: '/destinations/istanbul.jpg',
+     title:"Ucuz Uçak Biletleri ile Dünyayı Keşfedin!",
+     body:"Zamandan tasarruf edin ve paradan kazanın..",
+     buttons:[
+        { 
+            id:1,
+            label:"REZERVASYON YAP",
+            link:"/" },  ] 
+    
+     },
+    { id: 3, 
+      url: '/destinations/izmir.jpg' ,
+      title:"Türkiyeyi Keşfetmenin En Uygun Yolu! ",
+      body:"Hemen rezervasyon yapın, fırsatları kaçırmayın!.",
+      buttons:[
+        { 
+            id:1,
+            label:"REZERVASYON YAP",
+            link:"/"
+
+        },
+    
+      ]
+    },
+  ];
   export const deals = [
     {
       id:1,
@@ -211,14 +255,16 @@ export const images = [
   ]
 
   export const galleryimages = [
-    { src: '/gallery/gallery1.jpg', alt: 'Image 1' },
-    { src: '/gallery/gallery2.jpg', alt: 'Image 2' },
-    { src: '/gallery/gallery2.jpg', alt: 'Image 3' },
-    { src: '/gallery/gallery2.jpg', alt: 'Image 4' },
-    { src: '/gallery/gallery2.jpg', alt: 'Image 5' },
-    { src: '/gallery/gallery2.jpg', alt: 'Image 6' },
-    { src: '/gallery/gallery2.jpg', alt: 'Image 7' },
-    { src: '/gallery/gallery2.jpg', alt: 'Image 8' },
+    { src: '/destinations/kaş.jpg', alt: 'Image 1' },
+    { src: '/deal/deal1.jpg', alt: 'Image 2' },
+    { src: '/deal/deal2.jpg', alt: 'Image 3' },
+    { src: '/destinations/istanbul.jpg', alt: 'Image 4' },
+    { src: '/destinations/izmir.jpg', alt: 'Image 1' },
+    {src: '/deal/deal3.jpg', alt: 'Image 6' },
+    { src: '/destinations/mardin.jpg', alt: 'Image 7' },
+    { src: '/deal/deal4.jpg', alt: 'Image 7' },
+    { src: '/destinations/ankara.jpg', alt: 'Image 1' },
+   
     
   ];
   

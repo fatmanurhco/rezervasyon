@@ -1,5 +1,5 @@
 import "../App.css"
-import { useState } from "react";
+import { useState ,useEffect} from "react";
 import DataCity  from "../compoments/DataCity"
 import { Calendar } from 'primereact/calendar';
 import { Link } from 'react-router-dom';
@@ -9,41 +9,48 @@ import { hotelimages} from '../compoments/SliderImg';
 import 'swiper/css';
 import 'swiper/css/autoplay';
 import 'swiper/css/navigation';
+import { supabase } from "../compoments/SupaBase";
+import { useNavigate } from 'react-router-dom';
 
+const RecentActivities = () => {
+  const [blog, setBlog] = useState([]);
 
-export function TravelCard()
-{
-  // return(
-  // <Swiper
-  // className="swiper swiperdeal"
-  //   modules={[Navigation, Autoplay]}
-  //   centeredSlides={true}
-  //   autoplay={{
-  //     delay: 60000,
-  //     disableOnInteraction: false,
-  //   }}
-  //   navigation
-  //   speed={5000}
-  // >
-     
-  //    {travels.map(deal => (
-  //       <SwiperSlide 
-  //         className="swiper-slide slide-deal"
-  //         key={deal.id}>
-  //         <img src={deal.img} alt={deal.country} />
-  //         <div className="deal-content">
-  //           <h6>{deal.country}</h6>
-  //           <h4>{deal.title}</h4>
-  //           <p>With upto 30% Off, experience Europe your way!</p>
-  //           <p className="price">From $250.00</p>
-  //         </div>
+  useEffect(() => {
+    fetchBlogs();
+  }, []);
 
-  //       </SwiperSlide>
-  //     ))}
-  // </Swiper>
-  // );
-}
+  const fetchBlogs = async () => {
+    try {
+      const { data: blog, error } = await supabase
+        .from('blog')
+        .select('id, title, created_at, first_sentence');
 
+      if (error) {
+        throw error;
+      }
+
+      setBlog(blog);
+    } catch (error) {
+      console.error('Error fetching blogs:', error.message);
+    }
+  };
+
+  return (
+    <div className="act-box">
+      {blog.map(b => (
+        <div className="recent-act" key={b.id}> 
+          <p>{b.created_at}</p>
+          <h2>{b.title}</h2>
+          <p>{b.first_sentence}</p>
+          <Link className="btn act" to={`/blog/${b.id}`}>
+           OKU
+          </Link>
+        </div>
+        
+      ))}
+    </div>
+  );
+};
 
 export function MainSwiper() {
 return (
@@ -63,9 +70,11 @@ return (
             <div className="inner-content">
               <h1>{image.title}</h1>
               <p>{image.body}</p>
-              {image.buttons.map(button => (
+              <span className="slider-btn">
+                {image.buttons.map(button => (
                 <Link className="btn" key={button.id} to={button.link} >{button.label}</Link>
               ))}
+              </span>
             </div>
           </div>
           <div className="slide-image" style={{ backgroundImage: `url(${image.url})` }}></div>
@@ -74,9 +83,40 @@ return (
     </Swiper>
   );
 }
+const HotelCard = ({ hotel }) => {
+  return (
+    <div className="hotel-card">
+      <div className="hotel-image">
+        <img src={hotel.image} alt={hotel.name} />
+      </div>
+      <div className="hotel-info">
+        <h2>{hotel.name}</h2>
+        <p>Tipi: {hotel.type}</p>
+        <p>Fiyatı: {hotel.price} TL</p>
+        <p>Yatak Sayısı: {hotel.bedCount}</p>
+        <p>{hotel.description}</p>
+        <div className="hotel-buttons">
+          <Link to={`/hotel/${hotel.id}`} className="btn">
+            Detay
+          </Link>
+          <Link to={`/hotel/${hotel.id}`} className="btn black">
+            Satın Al
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
+};
 export default function Hotel()
 {
  const[date, setDate]=useState()
+ const navigate = useNavigate();
+ const handleSubmit = (e) => {
+   e.preventDefault();
+
+   navigate(`/hotel-list`);
+ 
+ };
     return(
     <>
    <div className="slider">
@@ -87,18 +127,22 @@ export default function Hotel()
       <div className="booking">
 
       <div className="bookform">
-            <form>
-            <label>Your Destination</label>
+            <form className="multi" onSubmit={handleSubmit}>
+              <span>
+            <label>Nereye</label>
               <select name="il" className="secim" >
                 {DataCity.dataCity.map((city) => (
                 <option key={city.plaka} value={city.plaka}>{city.il}</option>))}</select>
-            
+            </span>
+            <span>
             <label>Gidiş Tarihi</label>
               <Calendar className="calendar"  value={date} onChange={(e) => setDate(e.value)} placeholder="dd-mm-yy" />
-            
+              </span>
+              <span>
             <label>Çıkış Tarihi</label>
               <Calendar className="calendar"  value={date} onChange={(e) => setDate(e.value)} placeholder="dd-mm-yy" />
-            
+              </span>
+              <span>
             <label>Kişi Sayısı</label>
               <select name="adult" className="secim">
                 <option value="1">1</option>
@@ -107,14 +151,16 @@ export default function Hotel()
                 <option value="4">4</option>
                 <option value="5">5</option>
               </select>
+              </span>
+              <span>
               <label>Otel Tipi</label>
               <select name="hotel-types" className="secim">
                 <option value="1">High Class</option>
                 <option value="2">Middle Class</option>
                 <option value="3">Low Class</option>
               </select>
-          
-            <button className="btn form-btn">Hemen Bul</button>
+              </span>
+            <button className="btn form-btn btn-multi">Hemen Bul</button>
           </form>
 
         </div>
@@ -124,218 +170,200 @@ export default function Hotel()
         <div className="innfoboxes">
           <div className="box">
             <img src="/icons/price-tag.png" alt="pricing" />
-            <h3>Advice & Support</h3>
-            <p>Travel worry free knowing that we're here if you need us,24 hours a day</p>
+            <h3>Lüks Konfor</h3>
+            <p>Otelimizde, rahatınız ve konforunuz için her detay düşünülmüştür.</p>
           </div>
           <div className="box">
           <img src="/icons/award.png" alt="service" />
-            <h3>Air Ticketing</h3>
-            <p>Travel worry free knowing that we're here if you need us,24 hours a day</p>
+            <h3>Mükemmel Hizmet</h3>
+            <p>Misafir memnuniyeti bizim için her şeyden önemlidir.</p>
           </div>
           <div className="box">
           <img src="/icons/earth-globe.png" alt="coverage" />
-            <h3>Hotel Accomodation</h3>
-            <p>Travel worry free knowing that we're here if you need us,24 hours a day</p>
+            <h3>Eğlence ve Aktiviteler:</h3>
+            <p>Misafirlerimizin ihtiyaçlarına duyarlı bir hizmet anlayışıyla çalışıyoruz. </p>
           </div>
           <div className="box">
           <img src="/icons/earth-globe.png" alt="coverage" />
-            <h3>Tour Peckages</h3>
-            <p>Travel worry free knowing that we're here if you need us,24 hours a day</p>
+            <h3>Şehrin Merkezinde Konum</h3>
+            <p>Otelimiz, şehrin en hareketli noktalarına yakın konumda bulunmaktadır.</p>
           </div>
         </div>
       </div>
-      </div>
-      <div className="top-dest">
-        <div className="dest-inf red">
-          <span className="dest">
-            <h2>Top Most Destination</h2>
-            <p>Dünyayı keşfetmeye hazır olun! Muhteşem manzaralardan büyüleyici kültürlere kadar,
-               en iyi destinasyonlar sizi bekliyor.</p>
-          </span>
-        </div>
-        <div className="destinations">
-      
+     
+      <div className="flight-dest">
+          
+            <h2>En Çok Tercih Edilen İller</h2>
+         
+          <div className="fdest">
+          <div className="destination-flights">
+      <img src={'/destinations/ankara.jpg'} alt={'ankara'} />
+      <span className="dest-section">
+      <div className="star-rating">
+      <span className="star">&#9733;</span>
+      <span className="star">&#9733;</span>
+      <span className="star">&#9733;</span>
+      <span className="star">&#9733;</span>
+      <span className="star">&#9733;</span>
+    </div>
+        <h3>Ankara</h3>
+      </span>
       
     </div>
-
-      </div>
-      <div className="home">
+    <div className="destination-flights">
+      <img src={'/destinations/kaş.jpg'} alt={'kaş'} />
+      <span className="dest-section">
+      <div className="star-rating">
+      <span className="star">&#9733;</span>
+      <span className="star">&#9733;</span>
+      <span className="star">&#9733;</span>
+      <span className="star">&#9733;</span>
+      <span className="star">&#9733;</span>
+    </div>
+        <h3>Kaş</h3>
+      </span>
+      
+    </div>
+    <div className="destination-flights">
+      <img src={'/destinations/trabzon.jpg'} alt={'trabzon'} />
+      <span className="dest-section">
+      <div className="star-rating">
+      <span className="star">&#9733;</span>
+      <span className="star">&#9733;</span>
+      <span className="star">&#9733;</span>
+      <span className="star">&#9733;</span>
+      <span className="star">&#9733;</span>
+    </div>
+        <h3>Trabzon</h3>
+      </span>
+      
+    </div>
+    <div className="destination-flights">
+      <img src={'/destinations/mardin.jpg'} alt={'mardin'} />
+      <span className="dest-section">
+      <div className="star-rating">
+      <span className="star">&#9733;</span>
+      <span className="star">&#9733;</span>
+      <span className="star">&#9733;</span>
+      <span className="star">&#9733;</span>
+      <span className="star">&#9733;</span>
+    </div>
+        <h3>Mardin</h3>
+      </span>
+      
+    </div>
+    <div className="destination-flights">
+      <img src={'/destinations/istanbul.jpg'} alt={'istanbul'} />
+      <span className="dest-section">
+      <div className="star-rating">
+      <span className="star">&#9733;</span>
+      <span className="star">&#9733;</span>
+      <span className="star">&#9733;</span>
+      <span className="star">&#9733;</span>
+      <span className="star">&#9733;</span>
+    </div>
+        <h3>İstanbul</h3>
+      </span>
+      
+    </div>
+    <div className="destination-flights">
+      <img src={'/destinations/izmir.jpg'} alt={'izmir'} />
+      <span className="dest-section">
+      <div className="star-rating">
+      <span className="star">&#9733;</span>
+      <span className="star">&#9733;</span>
+      <span className="star">&#9733;</span>
+      <span className="star">&#9733;</span>
+      <span className="star">&#9733;</span>
+    </div>
+        <h3>İzmir</h3>
+      </span>
+      
+    </div>
+      
+        </div>
+        </div>
+     
       <div className="explore-rooms">
         <div className="room-inf">
-          <h2>Explore Rooms</h2>
-      <span className="underline"></span>
-          <p>Lorem Ipsum is simply dummy text the printing and 
-            typesetting industry. Lorem Ipsum has been the industry's 
-            standard dummy text ever since the 1500s,</p>
+          <h2>Odalara Göz Atın</h2>
+          <p>Huzur dolu anlar ve unutulmaz deneyimler için sizleri otelimizde ağırlamaktan mutluluk duyarız. </p>
         </div>
-       <div className="room-card">
-        <img src="" alt="" />
-        <label className="price"></label>
-        <label className="star"></label>
-        <label className="option"></label>
-        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Dignissimos, officia!</p>
-        <a href="#" className="btn">VIEW DETAILS</a>
-        <a href="#" className="btn">BOOK NOW</a>
-
-       </div>
-       <div className="room-card">
-        <img src="" alt="" />
-        <label className="price"></label>
-        <label className="star"></label>
-        <label className="option"></label>
-        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Dignissimos, officia!</p>
-        <a href="#" className="btn">VIEW DETAILS</a>
-        <a href="#" className="btn">BOOK NOW</a>
-
-       </div>
-       <div className="room-card">
-        <img src="" alt="" />
-        <label className="price"></label>
-        <label className="star"></label>
-        <label className="option"></label>
-        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Dignissimos, officia!</p>
-        <a href="#" className="btn">VIEW DETAILS</a>
-        <a href="#" className="btn">BOOK NOW</a>
-
-       </div>
+        <div className="hotel-cards">
+        <HotelCard
+        
+  hotel={{
+    id:1,
+    name: 'Hotel Ozkaymak Falez',
+    type: 'Lüks',
+    price: 9600,
+    bedCount: 2,
+    description: 'Harika bir tatil için ideal bir mekan.',
+    image: 'https://images.unsplash.com/photo-1611892440504-42a792e24d32?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  }}
+/>
+<HotelCard
+  hotel={{
+    id:2,
+    name: 'Hera Montagna Hotel',
+    type: 'Orta',
+    price: 4200,
+    bedCount: 2,
+    description: 'Harika bir tatil için ideal bir mekan.',
+    image: 'https://plus.unsplash.com/premium_photo-1676321688630-9558e7d2be10?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  }}
+/>
+<HotelCard
+  hotel={{
+    id:3,
+    name: 'Gönç Palas Oteli',
+    type: 'Düşük',
+    price: 3036,
+    bedCount: 2,
+    description: 'Harika bir tatil için ideal bir mekan.',
+    image: 'https://images.unsplash.com/photo-1618773928121-c32242e63f39?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  }}
+/>
+</div>
         </div>
+      <div className="banner">
+        <span>
+        <h1>YAZA ÖZEL %25 İNDİRİM</h1>
+        <h3>BU YAZ TATİLİNİZİ BİZİMLE PLANLAYIN</h3>
+        <a href="#" className="btn btn-banner">DETAYLARI GÖR</a>
+        </span>
+        <img src="/destinations/kaş.jpg" alt="kaş" />
       </div>
-      <div className="tellus">
-            <div className="tellus-content">
-                <h3>SUMMER SPECIAL</h3>
-                <div className="tellusbox">
-                    <h2><span>25%</span>off</h2></div>
-            </div>
-                <h2>3SPEND THE BEST VACTION WITH US The Nights Of Thailand</h2>
-                <button className="btn form-btn">SEARCH MORE OPTIONS</button>
-                <video src=""></video>
-        </div>
+      
       <div className="services">
         <span className="services-image">
-            <img src="" alt="" />
-            <img src="" alt="" />
+            <img src="/destinations/ankara.jpg" alt="" />
+            <img src="/destinations/istanbul.jpg" alt="" />
         </span>
-        <p>Amazing Places To Enjoy Your Travel</p>
-        <h2>We Provide Best Services</h2>
-        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Expedita facilis nesciunt autem.</p>
-         <a href="#" className="btn-deal">READ MORE</a>
+        <span className="services-span">
+        <p>Seyahatiniz İçin Muhteşem Yerler</p>
+        <h2>En İyi Hizmeti Bİz Veriyoruz</h2>
+        <p>Siz değerli misafirlerimize unutulmaz bir deneyim sunmak için buradayız. 
+          Otelimizde sunduğumuz en iyi hizmetlerle, konforlu ve keyifli bir konaklama geçirmenizi sağlamak için çaba gösteriyoruz. 
+          Misafirlerimizin memnuniyeti bizim önceliğimizdir. Sizleri aramızda görmek için sabırsızlanıyoruz!</p>
+         <a href="#" className="btn btn-deal">DAHA FAZLA</a>
+         </span>
       </div>
-      <div className="travel-agents">
-          <div className="travel-info">
-            <h2>Travel Agents</h2>
-            <span className="underline"></span>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur amet cupiditate incidunt esse nulla, 
-              dolores vitae perferendis officia temporibus sunt.</p>
-          </div>
-            <TravelCard /></div>
-            <div className="recom-hotel">
-        <div className="recom-inf">
-          <h2>Perfect Holiday recom-hotel</h2>
-      <span className="underline"></span>
-          <p>Lorem Ipsum is simply dummy text the printing and 
-            typesetting industry. Lorem Ipsum has been the industry's 
-            standard dummy text ever since the 1500s,</p>
-        </div>
-        <div className="recom-hotel">
-          <img src="" alt="" />
-        </div>
-        <div className="recom-hotel">
-          <div className="recom-hotel-content">
-            <p className="recom-hotel-country">United Kingdom</p>
-            <h4>Stonehenge,Windsor Castle, And Bath From London</h4>
-            <label className="stars"><img src="" alt="" />38 Rewiews</label>
-            <p className="recom-hotel-time" >3 days & 2 night</p> 
-          </div>
-        </div>
-        <div className="recom-hotel">
-        <div className="recom-hotel-content">
-            <p className="recom-hotel-country">United Kingdom</p>
-            <h4>Stonehenge,Windsor Castle, And Bath From London</h4>
-            <label className="stars"><img src="" alt="" />38 Rewiews</label>
-            <p className="recom-hotel-time" >3 days & 2 night</p> 
-          </div>
-        </div>
-        <div className="recom-hotel">
-        <div className="recom-hotel-content">
-            <p className="recom-hotel-country">United Kingdom</p>
-            <h4>Stonehenge,Windsor Castle, And Bath From London</h4>
-            <label className="stars"><img src="" alt="" />38 Rewiews</label>
-            <p className="recom-hotel-time" >3 days & 2 night</p> 
-          </div>
-        </div>
-        <div className="recom-hotel">
-        <div className="recom-hotel-content">
-            <p className="recom-hotel-country">United Kingdom</p>
-            <h4>Stonehenge,Windsor Castle, And Bath From London</h4>
-            <label className="stars"><img src="" alt="" />38 Rewiews</label>
-            <p className="recom-hotel-time" >3 days & 2 night</p> 
-          </div>
-        </div>
-        <div className="recom-hotel">
-        <div className="recom-hotel-content">
-            <p className="recom-hotel-country">United Kingdom</p>
-            <h4>Stonehenge,Windsor Castle, And Bath From London</h4>
-            <label className="stars"><img src="" alt="" />38 Rewiews</label>
-            <p className="recom-hotel-time" >3 days & 2 night</p> 
-          </div>
-        </div>
+      
+          
+      <div className="recent-activities">
+        <span className="act-info">
+          <h2>Son Aktiviteler</h2>
+          <p>Yolculuklarınızı Renklendirecek En Güncel ve Etkileyici Deneyimler</p>
+        </span>
+        
+     
+       <RecentActivities />
+     
+
       </div>
-      <div className="recent">
-        <div className="recentact-inf">
-          <h2>Perfect Holiday recentact</h2>
-      <span className="underline"></span>
-          <p>Lorem Ipsum is simply dummy text the printing and 
-            typesetting industry. Lorem Ipsum has been the industry's 
-            standard dummy text ever since the 1500s,</p>
-        </div>
-        <div className="recentact">
-          <img src="" alt="" />
-        </div>
-        <div className="recentact">
-          <div className="recentact-content">
-            <p className="recentact-country">United Kingdom</p>
-            <h4>Stonehenge,Windsor Castle, And Bath From London</h4>
-            <label className="stars"><img src="" alt="" />38 Rewiews</label>
-            <p className="recentact-time" >3 days & 2 night</p> 
-          </div>
-        </div>
-        <div className="recentact">
-        <div className="recentact-content">
-            <p className="recentact-country">United Kingdom</p>
-            <h4>Stonehenge,Windsor Castle, And Bath From London</h4>
-            <label className="stars"><img src="" alt="" />38 Rewiews</label>
-            <p className="recentact-time" >3 days & 2 night</p> 
-          </div>
-        </div>
-        <div className="recentact">
-        <div className="recentact-content">
-            <p className="recentact-country">United Kingdom</p>
-            <h4>Stonehenge,Windsor Castle, And Bath From London</h4>
-            <label className="stars"><img src="" alt="" />38 Rewiews</label>
-            <p className="recentact-time" >3 days & 2 night</p> 
-          </div>
-        </div>
-        <div className="recentact">
-        <div className="recentact-content">
-            <p className="recentact-country">United Kingdom</p>
-            <h4>Stonehenge,Windsor Castle, And Bath From London</h4>
-            <label className="stars"><img src="" alt="" />38 Rewiews</label>
-            <p className="recentact-time" >3 days & 2 night</p> 
-          </div>
-        </div>
-        <div className="recentact">
-        <div className="recentact-content">
-            <p className="recentact-country">United Kingdom</p>
-            <h4>Stonehenge,Windsor Castle, And Bath From London</h4>
-            <label className="stars"><img src="" alt="" />38 Rewiews</label>
-            <p className="recentact-time" >3 days & 2 night</p> 
-          </div>
-        </div>
-      </div>
-     <div className="hotel-slider">
-       
-     </div>
-    
+     
+    </div>
     </>
   )
 }

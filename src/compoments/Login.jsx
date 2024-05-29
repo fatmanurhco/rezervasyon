@@ -1,3 +1,4 @@
+import "../Login.css"
 import "../App.css"
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -25,7 +26,7 @@ export default function Login() {
     }
 
     return (
-        <>
+        <div className="login">
             <h1>Giriş Yap</h1>
             {errorCode > 0 && <p style={{color: 'red'}}>Hata: Lütfen bilgilerinizi kontrol ederek tekrar deneyin!</p>}
             <form onSubmit={handleSubmit} autoComplete="off">
@@ -33,7 +34,7 @@ export default function Login() {
                 <input required type="password" placeholder="Şifre" name="password" /><br />
                 <button>Giriş Yap</button>
             </form>
-            <p>Henüz kayıt olmadıysanız, <Link to="/kayit-ol">kayıt ol</Link>un.</p>
-        </>
+            <p>Henüz kayıt olmadıysanız, <Link to="/register">kayıt ol</Link>un.</p>
+        </div>
     )
 }
