@@ -1,5 +1,7 @@
 import React from 'react';
 import { supabase } from "../compoments/SupaBase";
+import { useEffect, useRef, useState } from "react";
+
 
 export function WhyUs() {
     return (

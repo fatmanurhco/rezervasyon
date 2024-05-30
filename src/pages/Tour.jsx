@@ -65,14 +65,13 @@ const TourPlans = () => {
 
 export default function Tour()
 {return(
-  <>
-<div className='home tour'>
-<h2>Yolculuğa Hazır Mısınız?</h2>
-<p>Dünyanın en güzel rotalarını keşfetmek için hazır olun. Hayalinizdeki tatil için bir adım ötede!</p>
-</div>
+  <div className='tour'>
+  <span className="theme ">
+  <h2>Yolculuğa Hazır Mısınız?</h2>
+  </span>
 <TourPlans />
 
-</>
+</div>
 
 ) 
 }

@@ -22,20 +22,9 @@
   
   
   }
-/* Genel stil */
-body {
-    background-color: #f7f9fc;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-  }
-  
   
   /* Form stili */
-  form {
+  .login, .register form {
     background-color: #fff;
     padding: 20px 20px 20px 30px;
     border-radius: 10px;
@@ -78,7 +67,7 @@ body {
   }
   
   /* Hata mesajı stili */
-  p {
+  .login, .register p {
     margin: 10px 0;
     color: #666;
     text-align: center;
@@ -103,8 +92,9 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    margin-inline:550px ;
     align-items: center;
-    margin-top: 250px;}
+    margin-top: 200px;}
 
 
     .register

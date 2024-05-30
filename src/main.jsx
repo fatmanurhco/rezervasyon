@@ -11,14 +11,16 @@ import FlightList from './pages/FlightList'
 import CarList from './pages/CarList'
 import HotelDetail from './pages/HotelDetail'
 import FlightDetail from './pages/FlightDetail'
+import BlogDetail from './pages/BlogDetail'
 import CarDetail from './pages/CarDetail'
  import Gallery from './pages/Gallery'
+ import Events from './pages/Events'
 import Flights from './pages/Flights'
 import Booking from './compoments/Booking'
-// import Login from './compoments/Login'
-// import Contact from './compoments/Contact'
+ import Login from './compoments/Login'
+import Contact from './compoments/Contact'
 import AboutUs from './compoments/AboutUs'
-// import Register from './compoments/Register'
+import Register from './compoments/Register'
 import Base from './layouts/Base'
 import NotFound from './compoments/404'
 
@@ -60,17 +62,23 @@ const router = createBrowserRouter([
       
         },
         {
-          path:"/aboutus",
+          path:"/about-us",
           element: <AboutUs />
       
         }
         ,
-        // {
-        //   path:"/contact",
-        //   element: <Contact />
+        {
+          path:"/contact",
+          element: <Contact />
       
-        // }
-        // ,
+        }
+        ,
+        {
+          path:"/events",
+          element: <Events />
+      
+        }
+        ,
         {
           path:"/hotel-List",
           element: <HotelList />
@@ -89,12 +97,7 @@ const router = createBrowserRouter([
       
         }
         ,
-        // {
-        //   path:"/login",
-        //   element: <Login />
-      
-        // }
-        // ,
+       
         {
           path:"/hotel/:id",
           element: <HotelDetail />
@@ -113,12 +116,24 @@ const router = createBrowserRouter([
       
         }
         ,
-        // {
-        //   path:"/register",
-        //   element: <Register />
+        {
+          path:"/blog/:id",
+          element: <BlogDetail />
       
-        // }
-        // ,
+        }
+        ,
+        {
+          path:"/login",
+          element: <Login />
+      
+        }
+        ,
+        {
+          path:"/register",
+          element: <Register />
+      
+        }
+        ,
         {
           path:"/gallery",
           element: <Gallery />
